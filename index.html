@@ -1,1 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Screening Appointment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Bangkok Hospital Inspired -->
+    <!-- Application Structure Plan: A single-page, multi-step scrolling form. Step 1 (Service) filters the options for Step 2 (Date). Step 2 filters options for Step 3 (Time). Step 4 (Details) is the final input stage. Sections are progressively enabled to guide the user through the complex booking logic smoothly. Includes a custom modal for validation alerts. -->
+    <!-- Visualization & Content Choices: Service and Date selections use clear, clickable cards with icons. Time slots are generated dynamically in a grid. A custom modal replaces the default browser alert for a better user experience when the coupon code is missing. Booked slots are disabled in real-time. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        :root {
+            --bh-blue-dark: #004785;
+            --bh-blue-light: #00AEC7;
+            --bh-red: #D4002D;
+            --bh-text: #4A4A4A;
+            --bh-bg-light: #f8f9fa;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: var(--bh-bg-light);
+            color: var(--bh-text);
+        }
+        header h1 {
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        header h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(to right, var(--bh-red), var(--bh-blue-dark));
+            border-radius: 2px;
+        }
+        .card-selected {
+            border-color: var(--bh-blue-dark);
+            box-shadow: 0 0 0 2px var(--bh-blue-dark);
+            transform: translateY(-2px);
+        }
+        .form-input {
+             border: 1px solid #ced4da;
+             transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
+        .form-input:focus {
+            border-color: var(--bh-blue-light);
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 174, 199, .25);
+        }
+        .submit-btn {
+            background-color: var(--bh-blue-dark);
+        }
+        .submit-btn:hover {
+            background-color: #003360;
+        }
+        .step-title {
+            position: relative;
+            padding-bottom: 10px;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .time-slot-btn {
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            color: var(--bh-blue-dark);
+        }
+        .time-slot-btn:hover:not(:disabled) {
+            background-color: #e9ecef;
+        }
+        .time-slot-btn.card-selected {
+            background-color: var(--bh-blue-dark);
+            color: white;
+            border-color: var(--bh-blue-dark);
+        }
+        .time-slot-btn:disabled {
+            background-color: #f1f5f9;
+            color: #94a3b8;
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+        .step-container.step-inactive {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .date-card[disabled] {
+            opacity: 0.4;
+            cursor: not-allowed;
+            background-color: #f1f5f9;
+        }
+        .date-card[disabled]:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: #e2e8f0;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+        <header class="text-center mb-8">
+             <h1 class="text-2xl md:text-3xl font-bold text-[var(--bh-blue-dark)]">Phuket Expat Health & Wellness Days</h1>
+             <p class="text-xl font-light text-gray-500 tracking-wider mt-2">Your Health Journey Begins Here</p>
+             <p class="text-lg text-gray-600">Appointment Booking Form</p>
+        </header>
 
+        <!-- Loading Indicator -->
+        <div id="loading-indicator" class="text-center py-12">
+            <svg class="animate-spin h-10 w-10 text-[var(--bh-blue-dark)] mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p class="mt-4 text-lg text-gray-600">Loading available appointments...</p>
+        </div>
+        
+        <main id="booking-flow" class="bg-white p-6 md:p-8 rounded-xl shadow-lg space-y-8 hidden">
+            
+            <!-- Step 1: Select Service -->
+            <div id="service-step" class="step-container">
+                <h2 class="text-xl font-semibold text-gray-700 step-title flex items-center">
+                    <span class="bg-[var(--bh-blue-dark)] text-white rounded-full h-8 w-8 text-sm font-bold inline-flex items-center justify-center mr-3">1</span>
+                    Choose a Service
+                </h2>
+                <div id="service-selection" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <button data-service="heart" class="service-card text-left border rounded-lg transition-all p-4 flex items-center space-x-4 hover:border-[var(--bh-blue-dark)] hover:shadow-md cursor-pointer">
+                        <svg class="h-12 w-12 text-[var(--bh-blue-dark)] shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5C2 5.41 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.08C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.41 22 8.5C22 12.27 18.6 15.36 13.45 20.03L12 21.35Z" fill="currentColor"/><path d="M4 10H7L9 12L11 8L13 14L15 11L17 13H20" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <div>
+                            <h3 class="font-bold text-md">Heart & Vascular Prevention</h3>
+                            <p class="text-sm text-gray-600">Echocardiogram & consultation</p>
+                        </div>
+                    </button>
+                    <button data-service="skin" class="service-card text-left border rounded-lg transition-all p-4 flex items-center space-x-4 hover:border-[var(--bh-blue-dark)] hover:shadow-md cursor-pointer">
+                        <svg class="h-12 w-12 text-[var(--bh-blue-dark)] shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM6.5 9a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm7 0a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM10 14a4 4 0 003.464-6H6.536A4 4 0 0010 14z"></path></svg>
+                        <div>
+                            <h3 class="font-bold text-md">Comprehensive Skin Check Up</h3>
+                            <p class="text-sm text-gray-600">(Skin Cancer Screening)</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Select Date & Location -->
+            <div id="date-step" class="step-container step-inactive">
+                <h2 class="text-xl font-semibold text-gray-700 step-title flex items-center">
+                    <span class="bg-[var(--bh-blue-dark)] text-white rounded-full h-8 w-8 text-sm font-bold inline-flex items-center justify-center mr-3">2</span>
+                    Choose a Date & Location
+                </h2>
+                <div id="date-selection" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <button id="date-card-nov09" data-date="2025-11-09" class="date-card text-left border rounded-lg transition-all flex items-center p-0 overflow-hidden hover:border-[var(--bh-blue-dark)] hover:shadow-md cursor-pointer">
+                        <div class="flex flex-col text-center p-4 w-24 bg-blue-50">
+                            <span class="text-sm font-semibold text-gray-500">NOV</span>
+                            <span class="text-4xl font-bold text-[var(--bh-blue-dark)] leading-tight">09</span>
+                            <span class="text-xs text-gray-500">2025</span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-md">BWC Laguna Phuket</h3>
+                            <p class="text-sm text-gray-600">Phuket</p>
+                        </div>
+                    </button>
+                    <button id="date-card-nov30" data-date="2025-11-30" class="date-card text-left border rounded-lg transition-all flex items-center p-0 overflow-hidden hover:border-[var(--bh-blue-dark)] hover:shadow-md cursor-pointer">
+                        <div class="flex flex-col text-center p-4 w-24 bg-blue-50">
+                            <span class="text-sm font-semibold text-gray-500">NOV</span>
+                            <span class="text-4xl font-bold text-[var(--bh-blue-dark)] leading-tight">30</span>
+                            <span class="text-xs text-gray-500">2025</span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-md">Dibuk Hospital</h3>
+                            <p class="text-sm text-gray-600">Phuket</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Select Time -->
+            <div id="time-step" class="step-container step-inactive">
+                <h2 class="text-xl font-semibold text-gray-700 step-title flex items-center">
+                    <span class="bg-[var(--bh-blue-dark)] text-white rounded-full h-8 w-8 text-sm font-bold inline-flex items-center justify-center mr-3">3</span>
+                    Select an Available Time
+                </h2>
+                <div id="time-slot-container">
+                    <!-- time slots will be generated here -->
+                </div>
+            </div>
+
+            <!-- Step 4: Your Details -->
+            <div id="details-step" class="step-container step-inactive">
+                 <h2 class="text-xl font-semibold text-gray-700 step-title flex items-center">
+                    <span class="bg-[var(--bh-blue-dark)] text-white rounded-full h-8 w-8 text-sm font-bold inline-flex items-center justify-center mr-3">4</span>
+                    Enter Your Details
+                </h2>
+                <form id="booking-form" class="space-y-4" novalidate>
+                    <div class="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+                        <div>
+                            <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">First Name <span class="text-red-500">*</span></label>
+                            <input type="text" id="firstName" name="firstName" class="form-input mt-1 block w-full px-3 py-2 rounded-md shadow-sm" required>
+                        </div>
+                        <div class="mt-4 md:mt-0">
+                            <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">Last Name <span class="text-red-500">*</span></label>
+                            <input type="text" id="lastName" name="lastName" class="form-input mt-1 block w-full px-3 py-2 rounded-md shadow-sm" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="dob" class="block text-sm font-medium text-gray-700 mb-1">Date of Birth <span class="text-red-500">*</span></label>
+                        <input type="date" id="dob" name="dob" class="form-input mt-1 block w-full px-3 py-2 rounded-md shadow-sm" required>
+                    </div>
+                     <div>
+                        <label for="passport" class="block text-sm font-medium text-gray-700 mb-1">Passport Number <span class="text-red-500">*</span></label>
+                        <input type="text" id="passport" name="passport" class="form-input mt-1 block w-full px-3 py-2 rounded-md shadow-sm" required>
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address <span class="text-red-500">*</span></label>
+                        <input type="email" id="email" name="email" class="form-input mt-1 block w-full px-3 py-2 rounded-md shadow-sm" required>
+                    </div>
+
+                    <div class="pt-4">
+                        <label for="couponCode" class="block text-sm font-medium text-gray-700 mb-1">Please enter your Coupon Code to confirm <span class="text-red-500">*</span></label>
+                        <input type="text" id="couponCode" name="couponCode" class="form-input mt-1 block w-full px-3 py-2 rounded-md shadow-sm" placeholder="Enter coupon code" required>
+                    </div>
+                    
+                    <div class="flex items-center justify-end pt-4">
+                        <button type="submit" id="submit-btn" class="submit-btn text-white py-2 px-6 rounded-md font-semibold focus:outline-none transition-colors flex items-center justify-center gap-2 w-full md:w-auto">
+                            Confirm Appointment
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <!-- Confirmation Screen -->
+        <div id="confirmation-step" class="text-center bg-white p-8 rounded-xl shadow-lg hidden">
+            <svg class="w-16 h-16 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <h2 class="text-2xl font-bold mt-4 text-[var(--bh-blue-dark)]">Appointment Confirmed!</h2>
+            <p class="text-gray-600 mt-2">A confirmation has been sent to your email. Please check your inbox.</p>
+            <div id="confirmation-details" class="mt-6 text-left bg-gray-50 p-4 rounded-lg border w-full max-w-md mx-auto space-y-2">
+                <!-- Confirmation details here -->
+            </div>
+            <button id="book-another-btn" type="button" class="mt-6 w-full max-w-md inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-[var(--bh-blue-dark)] text-base font-medium text-white hover:bg-[#003360] focus:outline-none">
+                Book Another Appointment
+            </button>
+        </div>
+    </div>
+
+    <!-- Alert Modal -->
+    <div id="alert-modal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full text-center">
+            <svg class="mx-auto h-12 w-12 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <h3 id="modal-title" class="text-lg font-medium text-gray-900 mt-3">Coupon Code Required</h3>
+            <p id="modal-message" class="mt-2 text-sm text-gray-600">
+                Please purchase a package before making an appointment. You can purchase packages at the
+                <a href="#" class="font-medium text-[var(--bh-blue-dark)] hover:underline">E-commerce Link</a>.
+            </p>
+            <div class="mt-4">
+                <button id="close-modal-btn" type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-[var(--bh-blue-dark)] text-base font-medium text-white hover:bg-[#003360] focus:outline-none">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // !!! IMPORTANT !!!
+            // PASTE YOUR **NEW** GOOGLE APPS SCRIPT URL HERE
+            const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyzv7Z9XcYatqv9Vy91Zo70Bfx5k1BxybV_CwDMkN8Hhjs5QdMDyUk_juRR2aWxZy4/exec';
+
+            let bookedSlots = {}; // This will hold the live data from Google Sheets
+
+            const loadingIndicator = document.getElementById('loading-indicator');
+            const bookingFlow = document.getElementById('booking-flow');
+            const confirmationStep = document.getElementById('confirmation-step');
+
+            // Fetches the latest booked slots from the Google Sheet when the page loads
+            function fetchBookedSlots() {
+                return fetch(SCRIPT_URL) // Return the promise
+                    .then(response => {
+                        if (!response.ok) throw new Error('Network response was not ok.');
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.error) throw new Error('Error from Google Script: ' + data.error);
+                        bookedSlots = data; // Update the global variable
+                    });
+            }
+            
+            // This function contains all the interactive logic of the form
+            function initializeApp() {
+                const state = {
+                    selectedService: null,
+                    selectedDate: null,
+                    selectedTime: null,
+                };
+
+                const steps = {
+                    service: document.getElementById('service-step'),
+                    date: document.getElementById('date-step'),
+                    time: document.getElementById('time-step'),
+                    details: document.getElementById('details-step'),
+                };
+
+                const serviceSelection = document.getElementById('service-selection');
+                const dateCardNov09 = document.getElementById('date-card-nov09');
+                const dateSelection = document.getElementById('date-selection');
+                const timeSlotContainer = document.getElementById('time-slot-container');
+                
+                const bookingForm = document.getElementById('booking-form');
+                const confirmationDetails = document.getElementById('confirmation-details');
+                
+                const alertModal = document.getElementById('alert-modal');
+                const modalTitle = document.getElementById('modal-title');
+                const modalMessage = document.getElementById('modal-message');
+                const closeModalBtn = document.getElementById('close-modal-btn');
+                const bookAnotherBtn = document.getElementById('book-another-btn');
+
+                function showAlertModal(title, message) {
+                    modalTitle.textContent = title;
+                    modalMessage.innerHTML = message;
+                    alertModal.classList.remove('hidden');
+                }
+                function hideAlertModal() {
+                    alertModal.classList.add('hidden');
+                }
+
+                closeModalBtn.addEventListener('click', hideAlertModal);
+                alertModal.addEventListener('click', (e) => {
+                    if (e.target === alertModal) { hideAlertModal(); }
+                });
+
+                bookAnotherBtn.addEventListener('click', () => {
+                    window.location.reload(); // Simple way to reset and fetch latest slots
+                });
+
+                function updateStep(activeStepKey, shouldScroll = true) {
+                    const stepKeys = Object.keys(steps);
+                    const activeIndex = stepKeys.indexOf(activeStepKey);
+
+                    stepKeys.forEach((key, index) => {
+                        if (index > activeIndex) {
+                            steps[key].classList.add('step-inactive');
+                        } else {
+                            steps[key].classList.remove('step-inactive');
+                        }
+                    });
+                    
+                    // Only scroll if it's explicitly allowed
+                    if(shouldScroll && steps[activeStepKey]) {
+                        steps[activeStepKey].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+
+                function generateTimeSlots() {
+                    timeSlotContainer.innerHTML = '';
+                    let slots = [];
+                    let content = '';
+
+                    if (state.selectedService === 'heart') {
+                        const startTime = 8 * 60;
+                        const endTime = 16 * 60;
+                        const interval = 15;
+                        for (let minutes = startTime; minutes < endTime; minutes += interval) {
+                            const hours = Math.floor(minutes / 60);
+                            const mins = minutes % 60;
+                            slots.push(`${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`);
+                        }
+                        content = `<div><h3 class="font-semibold text-gray-600 mb-2">Morning (8:00 - 11:45)</h3><div id="morning-slots" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 mb-4"></div></div><div><h3 class="font-semibold text-gray-600 mb-2">Afternoon (12:00 - 15:45)</h3><div id="afternoon-slots" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2"></div></div>`;
+                    } else if (state.selectedService === 'skin') {
+                        slots = ['09:00', '09:40', '10:20', '11:00', '11:40', '13:00', '13:40', '14:20', '15:00', '15:40'];
+                        content = `<div><div id="skin-slots" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2"></div></div>`;
+                    }
+                    
+                    timeSlotContainer.innerHTML = content;
+                    
+                    const dayBookedSlots = bookedSlots[state.selectedService]?.[state.selectedDate] || [];
+
+                    slots.forEach(timeString => {
+                        const button = document.createElement('button');
+                        button.classList.add('time-slot-btn', 'p-2', 'rounded-md', 'text-sm', 'font-semibold', 'transition-all');
+                        button.textContent = timeString;
+                        button.dataset.time = timeString;
+
+                        if (dayBookedSlots.includes(timeString)) {
+                            button.disabled = true;
+                        }
+                        
+                        if (state.selectedService === 'heart') {
+                            const hours = parseInt(timeString.split(':')[0]);
+                            if (hours < 12) {
+                                document.getElementById('morning-slots').appendChild(button);
+                            } else {
+                                document.getElementById('afternoon-slots').appendChild(button);
+                            }
+                        } else {
+                            document.getElementById('skin-slots').appendChild(button);
+                        }
+                    });
+                }
+                
+                serviceSelection.addEventListener('click', (e) => {
+                    const card = e.target.closest('.service-card');
+                    if (!card) return;
+
+                    document.querySelectorAll('.service-card').forEach(c => c.classList.remove('card-selected'));
+                    card.classList.add('card-selected');
+                    state.selectedService = card.dataset.service;
+
+                    state.selectedDate = null;
+                    state.selectedTime = null;
+                    document.querySelectorAll('.date-card').forEach(c => c.classList.remove('card-selected'));
+                    
+                    if (state.selectedService === 'skin') {
+                        dateCardNov09.disabled = true;
+                    } else {
+                        dateCardNov09.disabled = false;
+                    }
+                    updateStep('date');
+                });
+
+                dateSelection.addEventListener('click', (e) => {
+                    const card = e.target.closest('.date-card');
+                    if (!card || card.disabled) return;
+
+                    document.querySelectorAll('.date-card').forEach(c => c.classList.remove('card-selected'));
+                    card.classList.add('card-selected');
+                    
+                    state.selectedDate = card.dataset.date;
+                    generateTimeSlots();
+                    updateStep('time');
+                });
+
+                timeSlotContainer.addEventListener('click', (e) => {
+                    const button = e.target.closest('.time-slot-btn');
+                    if (!button || button.disabled) return;
+
+                    document.querySelectorAll('.time-slot-btn').forEach(b => b.classList.remove('card-selected'));
+                    button.classList.add('card-selected');
+
+                    state.selectedTime = button.dataset.time;
+                    updateStep('details');
+                });
+
+                bookingForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const submitBtn = document.getElementById('submit-btn');
+
+                    if (!bookingForm.checkValidity()) {
+                        if (!document.getElementById('couponCode').value.trim()) {
+                            showAlertModal(
+                                'Coupon Code Required',
+                                `Please purchase a package before making an appointment. You can purchase packages at the <a href="#" class="font-medium text-[var(--bh-blue-dark)] hover:underline">E-commerce Link</a>.`
+                            );
+                            return;
+                        }
+                        bookingForm.reportValidity();
+                        return;
+                    }
+
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = `
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Processing...
+                    `;
+                    
+                    const location = state.selectedDate === '2025-11-09' ? 'BWC Laguna Phuket' : 'Dibuk Hospital';
+                    const date = new Date(state.selectedDate).toLocaleDateString('en-GB');
+                    const serviceName = state.selectedService === 'heart' ? 'Heart & Vascular Prevention' : 'Comprehensive Skin Check Up';
+                    
+                    const submissionForm = new FormData(bookingForm);
+                    submissionForm.append('serviceName', serviceName);
+                    submissionForm.append('appointmentDate', date);
+                    submissionForm.append('appointmentTime', state.selectedTime);
+                    submissionForm.append('location', location);
+                    submissionForm.append('submissionTimestamp', new Date().toISOString());
+
+                    fetch(SCRIPT_URL, { method: 'POST', body: submissionForm})
+                        .then(response => response.json()) // Always expect a JSON response
+                        .then(data => {
+                            if (data.status === "success") {
+                                const formData = new FormData(bookingForm);
+                                const details = Object.fromEntries(formData.entries());
+                                const displayDate = new Date(state.selectedDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+                                confirmationDetails.innerHTML = `
+                                    <p><strong>Name:</strong> ${details.firstName} ${details.lastName}</p>
+                                    <p><strong>Date of Birth:</strong> ${details.dob}</p>
+                                    <p><strong>Passport No:</strong> ${details.passport}</p>
+                                    <p><strong>Email:</strong> ${details.email}</p>
+                                    <hr class="my-2">
+                                    <p><strong>Appointment:</strong> ${serviceName}</p>
+                                    <p><strong>Date:</strong> ${displayDate}</p>
+                                    <p><strong>Time:</strong> ${state.selectedTime}</p>
+                                    <p><strong>Location:</strong> ${location}</p>
+                                    <p><strong>Coupon Code:</strong> ${details.couponCode}</p>
+                                `;
+
+                                bookingFlow.classList.add('hidden');
+                                confirmationStep.classList.remove('hidden');
+                                window.scrollTo(0, 0);
+                            } else {
+                                // Handle error from script (e.g., duplicate booking)
+                                showAlertModal('Booking Failed', data.message);
+                                
+                                // Temporarily change the modal close button's behavior
+                                const originalOnclick = closeModalBtn.onclick;
+                                closeModalBtn.onclick = () => {
+                                    hideAlertModal();
+                                    // Refresh slots, then go back to time selection
+                                    fetchBookedSlots().then(() => {
+                                        generateTimeSlots();
+                                        updateStep('time');
+                                    }).catch(err => console.error("Failed to refresh slots:", err));
+                                    
+                                    // Restore original behavior
+                                    closeModalBtn.onclick = originalOnclick;
+                                };
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error!', error.message);
+                            showAlertModal('Submission Failed', 'There was a problem submitting your appointment. Please try again.');
+                        })
+                        .finally(() => {
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = 'Confirm Appointment';
+                        });
+                });
+                
+                // Initialize the first step, but do not scroll to it
+                updateStep('service', false);
+            }
+
+            // Start the process by fetching the initial data and then initializing the app
+            fetchBookedSlots()
+                .then(() => {
+                    // Hide loader and show form on success
+                    loadingIndicator.classList.add('hidden');
+                    bookingFlow.classList.remove('hidden');
+                    initializeApp();
+                })
+                .catch(error => {
+                    console.error('Failed to load booking data:', error);
+                    // Hide loader and show error message
+                    loadingIndicator.classList.add('hidden');
+                    bookingFlow.classList.remove('hidden'); // Make sure container is visible for error message
+                    bookingFlow.innerHTML = `
+                        <div class="text-center p-8 bg-red-50 border border-red-200 rounded-lg">
+                            <h2 class="text-xl font-bold text-red-700">Failed to Load Booking System</h2>
+                            <p class="text-red-600 mt-2">Could not retrieve current appointment data. Please check your connection and refresh the page.</p>
+                        </div>
+                    `;
+                });
+        });
+    </script>
+</body>
+</html>
