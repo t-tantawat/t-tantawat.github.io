@@ -678,8 +678,8 @@
             const canvas = document.getElementById('matrix-canvas');
             const ctx = canvas.getContext('2d');
 
-            let w = canvas.width = window.innerWidth;
-            let h = canvas.height = window.innerHeight;
+            let w = canvas.width = canvas.parentElement.clientWidth;
+            let h = canvas.height = canvas.parentElement.clientHeight;
             let cols = Math.floor(w / 20) + 1;
             let ypos = Array(cols).fill(0);
 
@@ -777,30 +777,17 @@
                     if (userIsClicking) return;
 
                     let bestCandidate = null;
-                    let smallestDistance = Infinity;
-                    const triggerPoint = window.innerHeight * 0.8; // 80% from top
+                    const middlePoint = window.innerHeight / 2;
 
                     sections.forEach(section => {
                         const rect = section.getBoundingClientRect();
-                        const distance = Math.abs(rect.top - triggerPoint);
-                        
-                        // Consider a section if its top is above the bottom of the viewport
-                        // and its bottom is below the top of the viewport
-                        if (rect.top < window.innerHeight && rect.bottom >= 0) {
-                             if (distance < smallestDistance) {
-                                smallestDistance = distance;
-                                bestCandidate = section.id;
-                            }
+                        // A section is considered active if its top is above the middle point
+                        // and its bottom is below the middle point.
+                        if (rect.top <= middlePoint && rect.bottom >= middlePoint) {
+                            bestCandidate = section.id;
                         }
                     });
-
-                    // BUG FIX: If the 'about' section's top is still below our trigger point,
-                    // it means we are in the hero section, so nothing should be active.
-                    const aboutSection = document.getElementById('about');
-                    if (aboutSection && aboutSection.getBoundingClientRect().top > triggerPoint) {
-                        bestCandidate = null;
-                    }
-
+                    
                     lastKnownActiveId = bestCandidate;
 
                     const isHoveringNav = navContainer && navContainer.matches(':hover');
