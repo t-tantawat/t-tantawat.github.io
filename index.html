@@ -3,33 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thongchai Tantawat</title>
+    <title>โปรไฟล์ของ ธงชัย ตัณฑวัฒน์</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
     <style>
         body {
-            font-family: 'Sarabun', sans-serif;
-            background-color: #1a202c; /* Dark Blue-Gray */
+            font-family: 'Courier New', monospace;
+            background-color: #0D0D0D; /* Near Black */
             color: #cbd5e0; /* Light Gray */
+            font-size: 1rem; /* Set base font size to 1rem */
         }
         .font-fira {
-            font-family: 'Fira Code', monospace;
+            font-family: 'Courier New', monospace;
         }
         .terminal-header {
             background-color: #2d3748; /* Darker Gray */
             border-bottom: 1px solid #4a5568;
         }
         .terminal-body {
-            background-color: #1a202c;
+            background-color: #0D0D0D;
         }
         .text-comment {
             color: #637795;
         }
         .text-keyword {
-            color: #c792ea; /* Purple */
+            color: #00ff41; /* Hacker Green */
+        }
+        nav a.text-keyword {
+            text-shadow: 0 0 10px #00ff41;
         }
         .text-variable {
             color: #82aaff; /* Blue */
@@ -44,6 +45,11 @@
             content: '_';
             animation: blink 1s step-end infinite;
         }
+        .blinking-cursor::after {
+            content: '_';
+            animation: blink 1s step-end infinite;
+            margin-left: 5px;
+        }
         @keyframes blink {
             50% {
                 opacity: 0;
@@ -54,7 +60,7 @@
         }
         .skill-tag:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(199, 146, 234, 0.2);
+            box-shadow: 0 4px 10px rgba(0, 255, 65, 0.1);
         }
         /* Hamburger Animation Styles */
         .hamburger-line {
@@ -77,6 +83,215 @@
             top: 50%;
             transform: translateY(-50%) rotate(-45deg);
         }
+        
+        /* Nav Link Styles */
+        .nav-link {
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 4px;
+            overflow: hidden;
+            transition: color 0.2s ease-in-out;
+        }
+        .nav-link > span {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Scanline Effect */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 2px;
+            background: #00ff41;
+            box-shadow: 0 0 5px #00ff41, 0 0 10px #00ff41;
+            opacity: 0;
+            will-change: top;
+            z-index: 1;
+        }
+        .nav-link:hover::after,
+        .nav-link.active-link::after {
+            opacity: 0.8;
+            animation: scanline 2s linear infinite;
+        }
+        @keyframes scanline {
+            0% { top: -20%; }
+            100% { top: 120%; }
+        }
+
+        /* Glitch Effect */
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        .glitch {
+            position: relative;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch::before {
+            left: 2px;
+            text-shadow: -1px 0 #ff00ff;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+
+        .glitch::after {
+            left: -2px;
+            text-shadow: -1px 0 #00ffff;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(42px, 9999px, 44px, 0); }
+            5% { clip: rect(12px, 9999px, 59px, 0); }
+            10% { clip: rect(48px, 9999px, 29px, 0); }
+            15% { clip: rect(42px, 9999px, 73px, 0); }
+            20% { clip: rect(63px, 9999px, 27px, 0); }
+            25% { clip: rect(34px, 9999px, 55px, 0); }
+            30% { clip: rect(86px, 9999px, 73px, 0); }
+            35% { clip: rect(20px, 9999px, 20px, 0); }
+            40% { clip: rect(26px, 9999px, 60px, 0); }
+            45% { clip: rect(25px, 9999px, 66px, 0); }
+            50% { clip: rect(57px, 9999px, 98px, 0); }
+            55% { clip: rect(5px, 9999px, 46px, 0); }
+            60% { clip: rect(82px, 9999px, 31px, 0); }
+            65% { clip: rect(54px, 9999px, 27px, 0); }
+            70% { clip: rect(28px, 9999px, 99px, 0); }
+            75% { clip: rect(45px, 9999px, 69px, 0); }
+            80% { clip: rect(23px, 9999px, 85px, 0); }
+            85% { clip: rect(54px, 9999px, 84px, 0); }
+            90% { clip: rect(45px, 9999px, 47px, 0); }
+            95% { clip: rect(37px, 9999px, 20px, 0); }
+            100% { clip: rect(4px, 9999px, 91px, 0); }
+        }
+
+        @keyframes glitch-anim2 {
+            0% { clip: rect(65px, 9999px, 100px, 0); }
+            5% { clip: rect(52px, 9999px, 74px, 0); }
+            10% { clip: rect(79px, 9999px, 85px, 0); }
+            15% { clip: rect(75px, 9999px, 5px, 0); }
+            20% { clip: rect(67px, 9999px, 61px, 0); }
+            25% { clip: rect(14px, 9999px, 79px, 0); }
+            30% { clip: rect(1px, 9999px, 66px, 0); }
+            35% { clip: rect(86px, 9999px, 30px, 0); }
+            40% { clip: rect(23px, 9999px, 98px, 0); }
+            45% { clip: rect(85px, 9999px, 72px, 0); }
+            50% { clip: rect(71px, 9999px, 75px, 0); }
+            55% { clip: rect(2px, 9999px, 48px, 0); }
+            60% { clip: rect(30px, 9999px, 16px, 0); }
+            65% { clip: rect(59px, 9999px, 50px, 0); }
+            70% { clip: rect(41px, 9999px, 62px, 0); }
+            75% { clip: rect(2px, 9999px, 82px, 0); }
+            80% { clip: rect(47px, 9999px, 73px, 0); }
+            85% { clip: rect(3px, 9999px, 27px, 0); }
+            90% { clip: rect(26px, 9999px, 55px, 0); }
+            95% { clip: rect(42px, 9999px, 97px, 0); }
+            100% { clip: rect(38px, 9999px, 49px, 0); }
+        }
+
+        #matrix-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.4;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        .contact-btn {
+            background-color: #0D0D0D;
+            border: 1px solid #00ff41;
+            transition: box-shadow 0.3s ease-in-out;
+        }
+        .contact-btn:hover {
+            box-shadow: 0 0 15px 5px rgba(0, 255, 65, 0.4);
+        }
+        main section h2 .text-keyword {
+            text-shadow: 0 0 5px #00ff41;
+        }
+        
+        /* Image Glitch Effect */
+        .image-glitch-wrapper {
+            position: relative;
+        }
+
+        .image-glitch-wrapper > div {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            border-radius: 9999px; /* full */
+        }
+
+        .image-glitch-wrapper > div:first-child { /* The main image */
+            border: 4px solid rgba(0, 255, 65, 0.5);
+        }
+        
+        .image-glitch-wrapper::after,
+        .image-glitch-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://github.com/phuketdev/phuketdev.github.io/blob/main/images/thong.jpg?raw=true');
+            background-size: cover;
+            background-position: center;
+            border-radius: 9999px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .image-glitch-wrapper:hover::before {
+            left: 2px;
+            animation: glitch-hover 0.3s linear infinite;
+            opacity: 1;
+            background-color: #ff00ff;
+            mix-blend-mode: screen;
+        }
+
+        .image-glitch-wrapper:hover::after {
+            left: -2px;
+            animation: glitch-hover 0.3s linear infinite reverse;
+            opacity: 1;
+            background-color: #00ffff;
+            mix-blend-mode: screen;
+        }
+
+        @keyframes glitch-hover {
+            0% { clip-path: inset(34% 0 59% 0); }
+            25% { clip-path: inset(42% 0 22% 0); }
+            50% { clip-path: inset(92% 0 8% 0); }
+            75% { clip-path: inset(12% 0 66% 0); }
+            100% { clip-path: inset(74% 0 23% 0); }
+        }
     </style>
 </head>
 <body class="leading-relaxed">
@@ -84,14 +299,14 @@
     <!-- Navigation -->
     <nav class="bg-gray-900/50 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-700">
         <div class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <a href="#" class="font-fira text-xl font-bold text-white">My <span class="text-keyword">Portfolio</span></a>
-            <div class="hidden md:flex space-x-6 text-sm items-center">
-                <a href="#about" class="hover:text-variable transition-colors duration-200">/about</a>
-                <a href="#skills" class="hover:text-variable transition-colors duration-200">/skills</a>
-                <a href="#experience" class="hover:text-variable transition-colors duration-200">/experience</a>
-                <a href="#education" class="hover:text-variable transition-colors duration-200">/education</a>
-                <a href="#projects" class="hover:text-variable transition-colors duration-200">/projects</a>
-                <a href="#contact" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">contact()</a>
+            <a href="#" class="font-fira text-xl font-bold text-keyword glitch" data-text="Portfolio">Portfolio</a>
+            <div class="hidden md:flex space-x-2 text-base items-center">
+                <a href="#about" class="nav-link hover:text-variable"><span>About</span></a>
+                <a href="#skills" class="nav-link hover:text-variable"><span>Skills</span></a>
+                <a href="#experience" class="nav-link hover:text-variable"><span>Experience</span></a>
+                <a href="#education" class="nav-link hover:text-variable"><span>Education</span></a>
+                <a href="#projects" class="nav-link hover:text-variable"><span>Projects</span></a>
+                <a href="#contact" class="nav-link hover:text-variable"><span>Contact</span></a>
             </div>
             <button id="mobile-menu-button" class="md:hidden text-white w-8 h-8 relative focus:outline-none">
                 <span class="sr-only">Toggle Menu</span>
@@ -101,23 +316,23 @@
             </button>
         </div>
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4 space-y-2">
-            <a href="#about" class="block hover:text-variable transition-colors duration-200">/about</a>
-            <a href="#skills" class="block hover:text-variable transition-colors duration-200">/skills</a>
-            <a href="#experience" class="block hover:text-variable transition-colors duration-200">/experience</a>
-            <a href="#education" class="block hover:text-variable transition-colors duration-200">/education</a>
-            <a href="#projects" class="block hover:text-variable transition-colors duration-200">/projects</a>
-            <a href="#contact" class="block mt-2 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 text-center">contact()</a>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4 space-y-2 text-base">
+            <a href="#about" class="nav-link block hover:text-variable"><span>About</span></a>
+            <a href="#skills" class="nav-link block hover:text-variable"><span>Skills</span></a>
+            <a href="#experience" class="nav-link block hover:text-variable"><span>Experience</span></a>
+            <a href="#education" class="nav-link block hover:text-variable"><span>Education</span></a>
+            <a href="#projects" class="nav-link block hover:text-variable"><span>Projects</span></a>
+            <a href="#contact" class="nav-link block hover:text-variable"><span>Contact</span></a>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <div class="container mx-auto px-6 py-12 md:py-20">
-
+    <main>
         <!-- Hero Section -->
-        <header class="text-center min-h-[40vh] flex flex-col justify-center items-center">
-            <div class="w-full max-w-3xl">
-                <div class="rounded-lg shadow-2xl overflow-hidden border border-gray-700">
+        <header class="relative w-full h-screen flex flex-col justify-center items-center overflow-hidden">
+            <canvas id="matrix-canvas"></canvas>
+            <div class="hero-content w-full max-w-4xl px-4">
+                <div class="rounded-lg shadow-2xl overflow-hidden border border-[#00ff41] bg-black/50 backdrop-blur-sm">
                     <div class="terminal-header p-3 flex items-center">
                         <div class="flex space-x-2">
                             <div class="w-3 h-3 rounded-full bg-red-500"></div>
@@ -126,7 +341,7 @@
                         </div>
                         <p class="flex-grow text-center text-sm text-gray-400 font-fira">/bin/bash</p>
                     </div>
-                    <div class="terminal-body p-4 md:p-8 text-left font-fira text-sm md:text-base">
+                    <div class="terminal-body p-4 md:p-8 text-left font-fira text-base md:text-lg">
                         <p><span class="text-green-400">user@portfolio</span><span class="text-white">:</span><span class="text-blue-400">~</span>$ <span id="typewriter" class="text-white cursor"></span></p>
                     </div>
                 </div>
@@ -134,73 +349,81 @@
         </header>
 
         <!-- About Me Section -->
-        <section id="about" class="my-20 scroll-mt-20">
-            <h2 class="text-3xl font-bold text-center mb-12 font-fira"><span class="text-comment">// 01.</span> <span class="text-variable">AboutMe</span></h2>
-            <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-12">
-                <!-- Profile Image -->
-                <div class="w-full md:w-1/3 flex-shrink-0">
-                    <img src="https://github.com/t-tantawat/t-tantawat.github.io/blob/main/images/thong.jpg?raw=true" 
-                         alt="Thongchai Tandawat Profile Picture" 
-                         class="rounded-full w-52 h-52 md:w-64 md:h-64 object-cover mx-auto border-4 border-indigo-500/50 shadow-2xl">
-                </div>
-                <!-- About Text -->
-                <div class="w-full md:w-2/3">
-                    <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-8 font-fira text-sm leading-loose">
-                        <p><span class="text-comment">/**</span></p>
-                        <p><span class="text-comment"> * สวัสดีครับ ผมธงชัย ตัณฑวัฒน์, Full-Stack Developer ผู้หลงใหลในการสร้างสรรค์เว็บแอปพลิเคชันที่มีประสิทธิภาพและสวยงาม</span></p>
-                        <p><span class="text-comment"> * ด้วยประสบการณ์กว่า 15 ปีในการพัฒนาซอฟต์แวร์ ผมมีความเชี่ยวชาญในการใช้เทคโนโลยีสมัยใหม่</span></p>
-                        <p><span class="text-comment"> * เพื่อแก้ปัญหาทางธุรกิจที่ซับซ้อนและสร้างประสบการณ์ที่ดีที่สุดให้กับผู้ใช้งาน</span></p>
-                        <p><span class="text-comment"> * ผมเชื่อในการเรียนรู้ตลอดชีวิตและพร้อมที่จะพัฒนาตัวเองไปพร้อมกับเทคโนโลยีที่เปลี่ยนแปลงอยู่เสมอ</span></p>
-                        <p><span class="text-comment"> */</span></p>
-                        <br>
-                        <p><span class="text-keyword">const</span> <span class="text-variable">name</span> = <span class="text-string">'ธงชัย ตัณฑวัฒน์ (Thongchai Tandawat)'</span>;</p>
-                        <p><span class="text-keyword">const</span> <span class="text-variable">role</span> = <span class="text-string">'Full-Stack Developer'</span>;</p>
-                        <p><span class="text-keyword">const</span> <span class="text-variable">location</span> = <span class="text-string">'ภูเก็ต, ประเทศไทย'</span>;</p>
-                        <p><span class="text-keyword">const</span> <span class="text-variable">status</span> = <span class="text-string">'พร้อมเรียนรู้สิ่งใหม่เสมอ และเปิดรับทุกโอกาส'</span>;</p>
+        <section id="about" class="scroll-mt-16 bg-[#121212] py-20 md:py-24">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-12 font-fira">
+                    <span class="text-keyword">About Me</span><span class="text-keyword blinking-cursor"></span>
+                </h2>
+                <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-12">
+                    <!-- Profile Image -->
+                    <div class="w-full md:w-1/3 flex-shrink-0 flex justify-center">
+                        <div class="image-glitch-wrapper w-52 h-52 md:w-64 md:h-64">
+                             <div style="background-image: url('https://github.com/phuketdev/phuketdev.github.io/blob/main/images/thong.jpg?raw=true');"></div>
+                        </div>
+                    </div>
+                    <!-- About Text -->
+                    <div class="w-full md:w-2/3">
+                        <div class="bg-gray-800/50 border border-[#00ff41] rounded-lg p-8 font-fira text-base leading-loose">
+                            <p><span class="text-comment">/**</span></p>
+                            <p><span class="text-comment"> * สวัสดีครับ ผมธงชัย ตัณฑวัฒน์, Full-Stack Developer ผู้หลงใหลในการสร้างสรรค์เว็บแอปพลิเคชันที่มีประสิทธิภาพและสวยงาม</span></p>
+                            <p><span class="text-comment"> * ด้วยประสบการณ์กว่า 15 ปีในการพัฒนาซอฟต์แวร์ ผมมีความเชี่ยวชาญในการใช้เทคโนโลยีสมัยใหม่</span></p>
+                            <p><span class="text-comment"> * เพื่อแก้ปัญหาทางธุรกิจที่ซับซ้อนและสร้างประสบการณ์ที่ดีที่สุดให้กับผู้ใช้งาน</span></p>
+                            <p><span class="text-comment"> * ผมเชื่อในการเรียนรู้ตลอดชีวิตและพร้อมที่จะพัฒนาตัวเองไปพร้อมกับเทคโนโลยีที่เปลี่ยนแปลงอยู่เสมอ</span></p>
+                            <p><span class="text-comment"> */</span></p>
+                            <br>
+                            <p><span class="text-keyword">const</span> <span class="text-variable">name</span> = <span class="text-string">'ธงชัย ตัณฑวัฒน์ (Thongchai Tantawat)'</span>;</p>
+                            <p><span class="text-keyword">const</span> <span class="text-variable">role</span> = <span class="text-string">'Full-Stack Developer'</span>;</p>
+                            <p><span class="text-keyword">const</span> <span class="text-variable">location</span> = <span class="text-string">'ภูเก็ต, ประเทศไทย'</span>;</p>
+                            <p><span class="text-keyword">const</span> <span class="text-variable">status</span> = <span class="text-string">'พร้อมเรียนรู้สิ่งใหม่เสมอ และเปิดรับทุกโอกาส'</span>;</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Skills Section -->
-        <section id="skills" class="my-20 scroll-mt-20">
-            <h2 class="text-3xl font-bold text-center mb-10 font-fira"><span class="text-comment">// 02.</span> <span class="text-variable">Skills</span></h2>
-            <div class="max-w-5xl mx-auto">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Frontend -->
-                    <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-6">
-                        <h3 class="text-xl font-bold mb-4 font-fira text-function">frontend.js</h3>
-                        <div class="flex flex-wrap gap-2">
-                           <span class="skill-tag bg-blue-900/50 text-blue-300 text-xs font-medium px-3 py-1 rounded-full border border-blue-700">React</span>
-                           <span class="skill-tag bg-green-900/50 text-green-300 text-xs font-medium px-3 py-1 rounded-full border border-green-700">Vue.js</span>
-                           <span class="skill-tag bg-yellow-900/50 text-yellow-300 text-xs font-medium px-3 py-1 rounded-full border border-yellow-700">JavaScript (ES6+)</span>
-                           <span class="skill-tag bg-blue-900/50 text-blue-300 text-xs font-medium px-3 py-1 rounded-full border border-blue-700">TypeScript</span>
-                           <span class="skill-tag bg-purple-900/50 text-purple-300 text-xs font-medium px-3 py-1 rounded-full border border-purple-700">Tailwind CSS</span>
-                           <span class="skill-tag bg-pink-900/50 text-pink-300 text-xs font-medium px-3 py-1 rounded-full border border-pink-700">Sass</span>
+        <section id="skills" class="scroll-mt-16 py-20 md:py-24">
+             <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-12 font-fira">
+                    <span class="text-keyword">Skills</span><span class="text-keyword blinking-cursor"></span>
+                </h2>
+                <div class="max-w-5xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Frontend -->
+                        <div class="bg-gray-800/50 border border-[#00ff41] rounded-lg p-6">
+                            <h3 class="text-xl font-bold mb-4 font-fira text-function">frontend.js</h3>
+                            <div class="flex flex-wrap gap-2">
+                               <span class="skill-tag bg-green-900/50 text-green-300 text-xs font-medium px-3 py-1 rounded-full border border-green-700">React</span>
+                               <span class="skill-tag bg-green-900/50 text-green-300 text-xs font-medium px-3 py-1 rounded-full border border-green-700">Vue.js</span>
+                               <span class="skill-tag bg-gray-700/50 text-gray-300 text-xs font-medium px-3 py-1 rounded-full border border-gray-600">JavaScript (ES6+)</span>
+                               <span class="skill-tag bg-green-900/50 text-green-300 text-xs font-medium px-3 py-1 rounded-full border border-green-700">TypeScript</span>
+                               <span class="skill-tag bg-gray-700/50 text-gray-300 text-xs font-medium px-3 py-1 rounded-full border border-gray-600">Tailwind CSS</span>
+                               <span class="skill-tag bg-gray-700/50 text-gray-300 text-xs font-medium px-3 py-1 rounded-full border border-gray-600">Sass</span>
+                            </div>
                         </div>
-                    </div>
-                     <!-- Backend -->
-                    <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-6">
-                        <h3 class="text-xl font-bold mb-4 font-fira text-function">backend.js</h3>
-                        <div class="flex flex-wrap gap-2">
-                           <span class="skill-tag bg-green-900/50 text-green-300 text-xs font-medium px-3 py-1 rounded-full border border-green-700">Node.js</span>
-                           <span class="skill-tag bg-gray-700 text-gray-200 text-xs font-medium px-3 py-1 rounded-full border border-gray-500">Express.js</span>
-                           <span class="skill-tag bg-yellow-900/50 text-yellow-300 text-xs font-medium px-3 py-1 rounded-full border border-yellow-700">Python</span>
-                           <span class="skill-tag bg-gray-700 text-gray-200 text-xs font-medium px-3 py-1 rounded-full border border-gray-500">Django</span>
-                           <span class="skill-tag bg-blue-900/50 text-blue-300 text-xs font-medium px-3 py-1 rounded-full border border-blue-700">Go</span>
-                           <span class="skill-tag bg-orange-900/50 text-orange-300 text-xs font-medium px-3 py-1 rounded-full border border-orange-700">RESTful APIs</span>
+                         <!-- Backend -->
+                        <div class="bg-gray-800/50 border border-[#00ff41] rounded-lg p-6">
+                            <h3 class="text-xl font-bold mb-4 font-fira text-function">backend.js</h3>
+                            <div class="flex flex-wrap gap-2">
+                               <span class="skill-tag bg-green-900/50 text-green-300 text-xs font-medium px-3 py-1 rounded-full border border-green-700">Node.js</span>
+                               <span class="skill-tag bg-gray-700/50 text-gray-300 text-xs font-medium px-3 py-1 rounded-full border border-gray-600">Express.js</span>
+                               <span class="skill-tag bg-gray-700/50 text-gray-300 text-xs font-medium px-3 py-1 rounded-full border border-gray-600">Python</span>
+                               <span class="skill-tag bg-gray-700/50 text-gray-300 text-xs font-medium px-3 py-1 rounded-full border border-gray-600">Django</span>
+                               <span class="skill-tag bg-green-900/50 text-green-300 text-xs font-medium px-3 py-1 rounded-full border border-green-700">Go</span>
+                               <span class="skill-tag bg-gray-700/50 text-gray-300 text-xs font-medium px-3 py-1 rounded-full border border-gray-600">RESTful APIs</span>
+                            </div>
                         </div>
-                    </div>
-                     <!-- Database & DevOps -->
-                    <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-6">
-                        <h3 class="text-xl font-bold mb-4 font-fira text-function">tools.config</h3>
-                        <div class="flex flex-wrap gap-2">
-                           <span class="skill-tag bg-blue-900/50 text-blue-300 text-xs font-medium px-3 py-1 rounded-full border border-blue-700">PostgreSQL</span>
-                           <span class="skill-tag bg-green-900/50 text-green-300 text-xs font-medium px-3 py-1 rounded-full border border-green-700">MongoDB</span>
-                           <span class="skill-tag bg-yellow-900/50 text-yellow-300 text-xs font-medium px-3 py-1 rounded-full border border-yellow-700">Firebase</span>
-                           <span class="skill-tag bg-blue-900/50 text-blue-300 text-xs font-medium px-3 py-1 rounded-full border border-blue-700">Docker</span>
-                           <span class="skill-tag bg-orange-900/50 text-orange-300 text-xs font-medium px-3 py-1 rounded-full border border-orange-700">AWS</span>
-                           <span class="skill-tag bg-gray-700 text-gray-200 text-xs font-medium px-3 py-1 rounded-full border border-gray-500">Git & GitHub</span>
+                         <!-- Database & DevOps -->
+                        <div class="bg-gray-800/50 border border-[#00ff41] rounded-lg p-6">
+                            <h3 class="text-xl font-bold mb-4 font-fira text-function">tools.config</h3>
+                            <div class="flex flex-wrap gap-2">
+                               <span class="skill-tag bg-green-900/50 text-green-300 text-xs font-medium px-3 py-1 rounded-full border border-green-700">PostgreSQL</span>
+                               <span class="skill-tag bg-green-900/50 text-green-300 text-xs font-medium px-3 py-1 rounded-full border border-green-700">MongoDB</span>
+                               <span class="skill-tag bg-gray-700/50 text-gray-300 text-xs font-medium px-3 py-1 rounded-full border border-gray-600">Firebase</span>
+                               <span class="skill-tag bg-green-900/50 text-green-300 text-xs font-medium px-3 py-1 rounded-full border border-green-700">Docker</span>
+                               <span class="skill-tag bg-gray-700/50 text-gray-300 text-xs font-medium px-3 py-1 rounded-full border border-gray-600">AWS</span>
+                               <span class="skill-tag bg-gray-700/50 text-gray-300 text-xs font-medium px-3 py-1 rounded-full border border-gray-600">Git & GitHub</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -208,158 +431,166 @@
         </section>
 
         <!-- Experience Section -->
-        <section id="experience" class="my-20 scroll-mt-20">
-            <h2 class="text-3xl font-bold text-center mb-10 font-fira"><span class="text-comment">// 03.</span> <span class="text-variable">Experience</span></h2>
-            <div class="max-w-4xl mx-auto relative border-l-2 border-gray-700 pl-10">
-                <!-- Timeline Item 1 -->
-                <div class="mb-12">
-                     <div class="absolute -left-3.5 mt-1.5 w-6 h-6 bg-indigo-500 rounded-full border-4 border-gray-800"></div>
-                     <p class="text-sm text-gray-400 font-fira">Jan 2009 - Present</p>
-                     <h3 class="text-xl font-bold text-white mt-1">Web Developer</h3>
-                     <p class="text-md text-variable mb-3">Bangkok Hospital Phuket</p>
-                     <ul class="list-disc list-inside text-gray-400 space-y-2 text-sm">
-                         <li><span class="text-comment">//</span> พัฒนาและดูแลเว็บแอปพลิเคชันภายในของโรงพยาบาล</li>
-                         <li><span class="text-comment">//</span> ทำงานร่วมกับทีมแพทย์และบุคลากรเพื่อรวบรวมความต้องการของระบบ</li>
-                         <li><span class="text-comment">//</span> ออกแบบและจัดการฐานข้อมูลสำหรับระบบต่างๆ</li>
-                     </ul>
-                </div>
-                <!-- Timeline Item 2 -->
-                <div class="mb-12">
-                     <div class="absolute -left-3.5 mt-1.5 w-6 h-6 bg-gray-600 rounded-full border-4 border-gray-800"></div>
-                     <p class="text-sm text-gray-400 font-fira">Jan 2007 - Jan 2009 ‎(2 yr 1 mo)‎</p>
-                     <h3 class="text-xl font-bold text-white mt-1">IT Support</h3>
-                     <p class="text-md text-variable mb-3">Bangkok Hospital Phuket</p>
-                     <ul class="list-disc list-inside text-gray-400 space-y-2 text-sm">
-                         <li><span class="text-comment">//</span> ให้ความช่วยเหลือและแก้ไขปัญหาด้านเทคนิคให้กับบุคลากร</li>
-                         <li><span class="text-comment">//</span> ดูแลและบำรุงรักษาระบบคอมพิวเตอร์และเครือข่าย</li>
-                         <li><span class="text-comment">//</span> จัดการบัญชีผู้ใช้งานและสิทธิ์การเข้าถึงระบบ</li>
-                     </ul>
-                </div>
-                <!-- Timeline Item 3 -->
-                <div class="mb-12">
-                     <div class="absolute -left-3.5 mt-1.5 w-6 h-6 bg-gray-600 rounded-full border-4 border-gray-800"></div>
-                     <p class="text-sm text-gray-400 font-fira">Jan 2005 - Jan 2007 ‎(2 yr 0 mo)‎</p>
-                     <h3 class="text-xl font-bold text-white mt-1">Application Software</h3>
-                     <p class="text-md text-variable mb-3">Global Building Control</p>
-                     <ul class="list-disc list-inside text-gray-400 space-y-2 text-sm">
-                         <li><span class="text-comment">//</span> พัฒนาซอฟต์แวร์สำหรับระบบควบคุมอาคาร</li>
-                         <li><span class="text-comment">//</span> ทดสอบและแก้ไขข้อบกพร่องของโปรแกรม</li>
-                         <li><span class="text-comment">//</span> จัดทำเอกสารประกอบการใช้งานซอฟต์แวร์</li>
-                     </ul>
+        <section id="experience" class="scroll-mt-16 bg-[#121212] py-20 md:py-24">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-12 font-fira">
+                    <span class="text-keyword">Experience</span><span class="text-keyword blinking-cursor"></span>
+                </h2>
+                <div class="max-w-4xl mx-auto relative border-l-2 border-[#00ff41] pl-10">
+                    <!-- Timeline Item 1 -->
+                    <div class="mb-12">
+                         <div class="absolute -left-4 w-8 h-8 flex items-center justify-center font-fira text-orange-400 text-2xl font-bold">{}</div>
+                         <p class="text-sm text-gray-400 font-fira">Jan 2009 - Present</p>
+                         <h3 class="text-xl font-bold text-white mt-1">Web Developer</h3>
+                         <p class="text-md text-variable mb-3">Bangkok Hospital Phuket</p>
+                         <ul class="list-disc list-inside text-gray-400 space-y-2 text-sm">
+                             <li><span class="text-comment">//</span> พัฒนาและดูแลเว็บแอปพลิเคชันภายในของโรงพยาบาล</li>
+                             <li><span class="text-comment">//</span> ทำงานร่วมกับทีมแพทย์และบุคลากรเพื่อรวบรวมความต้องการของระบบ</li>
+                             <li><span class="text-comment">//</span> ออกแบบและจัดการฐานข้อมูลสำหรับระบบต่างๆ</li>
+                         </ul>
+                    </div>
+                    <!-- Timeline Item 2 -->
+                    <div class="mb-12">
+                         <div class="absolute -left-4 w-8 h-8 flex items-center justify-center font-fira text-gray-500 text-2xl font-bold">{}</div>
+                         <p class="text-sm text-gray-400 font-fira">Jan 2007 - Jan 2009 ‎(2 yr 1 mo)‎</p>
+                         <h3 class="text-xl font-bold text-white mt-1">IT Support</h3>
+                         <p class="text-md text-variable mb-3">Bangkok Hospital Phuket</p>
+                         <ul class="list-disc list-inside text-gray-400 space-y-2 text-sm">
+                             <li><span class="text-comment">//</span> ให้ความช่วยเหลือและแก้ไขปัญหาด้านเทคนิคให้กับบุคลากร</li>
+                             <li><span class="text-comment">//</span> ดูแลและบำรุงรักษาระบบคอมพิวเตอร์และเครือข่าย</li>
+                             <li><span class="text-comment">//</span> จัดการบัญชีผู้ใช้งานและสิทธิ์การเข้าถึงระบบ</li>
+                         </ul>
+                    </div>
+                    <!-- Timeline Item 3 -->
+                    <div class="mb-12">
+                         <div class="absolute -left-4 w-8 h-8 flex items-center justify-center font-fira text-gray-500 text-2xl font-bold">{}</div>
+                         <p class="text-sm text-gray-400 font-fira">Jan 2005 - Jan 2007 ‎(2 yr 0 mo)‎</p>
+                         <h3 class="text-xl font-bold text-white mt-1">Application Software</h3>
+                         <p class="text-md text-variable mb-3">Global Building Control</p>
+                         <ul class="list-disc list-inside text-gray-400 space-y-2 text-sm">
+                             <li><span class="text-comment">//</span> พัฒนาซอฟต์แวร์สำหรับระบบควบคุมอาคาร</li>
+                             <li><span class="text-comment">//</span> ทดสอบและแก้ไขข้อบกพร่องของโปรแกรม</li>
+                             <li><span class="text-comment">//</span> จัดทำเอกสารประกอบการใช้งานซอฟต์แวร์</li>
+                         </ul>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Education Section -->
-        <section id="education" class="my-20 scroll-mt-20">
-            <h2 class="text-3xl font-bold text-center mb-10 font-fira"><span class="text-comment">// 04.</span> <span class="text-variable">Education</span></h2>
-            <div class="max-w-4xl mx-auto relative border-l-2 border-gray-700 pl-10">
-                <!-- Timeline Item 1 -->
-                <div class="mb-12">
-                     <div class="absolute -left-3.5 mt-1.5 w-6 h-6 bg-indigo-500 rounded-full border-4 border-gray-800"></div>
-                     <p class="text-sm text-gray-400 font-fira">ปีที่จบการศึกษา : 2547</p>
-                     <h3 class="text-xl font-bold text-white mt-1">ปริญญาตรี, คณะวิศวกรรมศาสตร์</h3>
-                     <p class="text-md text-variable mb-3">มหาวิทยาลัยเทคโนโลยีมหานคร</p>
-                     <ul class="list-disc list-inside text-gray-400 space-y-2 text-sm">
-                         <li><span class="text-comment">//</span> สาขาวิชาวิศวกรรมคอมพิวเตอร์</li>
-                     </ul>
-                </div>
-                <!-- Timeline Item 2 -->
-                 <div class="mb-12">
-                     <div class="absolute -left-3.5 mt-1.5 w-6 h-6 bg-gray-600 rounded-full border-4 border-gray-800"></div>
-                     <p class="text-sm text-gray-400 font-fira">ปีที่จบการศึกษา : 2544</p>
-                     <h3 class="text-xl font-bold text-white mt-1">ประกาศนียบัตรวิชาชีพชั้นสูง (ปวส.), แผนกวิชาช่างอิเล็กทรอนิกส์</h3>
-                     <p class="text-md text-variable mb-3">วิทยาลัยเทคนิคภูเก็ต</p>
-                     <ul class="list-disc list-inside text-gray-400 space-y-2 text-sm">
-                         <li><span class="text-comment">//</span> สาขาวิชาเทคนิคคอมพิวเตอร์</li>
-                     </ul>
+        <section id="education" class="scroll-mt-16 py-20 md:py-24">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-12 font-fira">
+                    <span class="text-keyword">Education</span><span class="text-keyword blinking-cursor"></span>
+                </h2>
+                <div class="max-w-4xl mx-auto relative border-l-2 border-[#00ff41] pl-10">
+                    <!-- Timeline Item 1 -->
+                    <div class="mb-12">
+                         <div class="absolute -left-4 w-8 h-8 flex items-center justify-center font-fira text-blue-400 text-2xl font-bold">{}</div>
+                         <p class="text-sm text-gray-400 font-fira">ปีที่จบการศึกษา : 2547</p>
+                         <h3 class="text-xl font-bold text-white mt-1">ปริญญาตรี, คณะวิศวกรรมศาสตร์</h3>
+                         <p class="text-md text-variable mb-3">มหาวิทยาลัยเทคโนโลยีมหานคร</p>
+                         <ul class="list-disc list-inside text-gray-400 space-y-2 text-sm">
+                             <li><span class="text-comment">//</span> สาขาวิชาวิศวกรรมคอมพิวเตอร์</li>
+                         </ul>
+                    </div>
+                    <!-- Timeline Item 2 -->
+                     <div class="mb-12">
+                         <div class="absolute -left-4 w-8 h-8 flex items-center justify-center font-fira text-gray-500 text-2xl font-bold">{}</div>
+                         <p class="text-sm text-gray-400 font-fira">ปีที่จบการศึกษา : 2544</p>
+                         <h3 class="text-xl font-bold text-white mt-1">ประกาศนียบัตรวิชาชีพชั้นสูง (ปวส.), แผนกวิชาช่างอิเล็กทรอนิกส์</h3>
+                         <p class="text-md text-variable mb-3">วิทยาลัยเทคนิคภูเก็ต</p>
+                         <ul class="list-disc list-inside text-gray-400 space-y-2 text-sm">
+                             <li><span class="text-comment">//</span> สาขาวิชาเทคนิคคอมพิวเตอร์</li>
+                         </ul>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Projects Section -->
-        <section id="projects" class="my-20 scroll-mt-20">
-            <h2 class="text-3xl font-bold text-center mb-10 font-fira"><span class="text-comment">// 05.</span> <span class="text-variable">Projects</span></h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Project Card 1 -->
-                <div class="bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex flex-col group transition-transform duration-300 hover:-translate-y-1">
-                    <div class="p-6 flex-grow">
-                        <div class="flex justify-between items-center mb-4">
-                            <i data-feather="folder" class="text-indigo-400"></i>
-                            <div class="flex space-x-3">
-                                <!-- <a href="#" target="_blank" class="text-gray-500 hover:text-white transition-colors"><i data-feather="github"></i></a> -->
-                                <a href="#" target="_blank" class="text-gray-500 hover:text-white transition-colors"><i data-feather="external-link"></i></a>
+        <section id="projects" class="scroll-mt-16 bg-[#121212] py-20 md:py-24">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-12 font-fira">
+                    <span class="text-keyword">Projects</span><span class="text-keyword blinking-cursor"></span>
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Project Card 1 -->
+                    <div class="bg-gray-800/50 border border-[#00ff41] rounded-lg overflow-hidden flex flex-col group transition-transform duration-300 hover:-translate-y-1">
+                        <div class="p-6 flex-grow">
+                            <div class="flex justify-between items-center mb-4">
+                                <i data-feather="folder" class="text-pink-400"></i>
+                                <div class="flex space-x-3">
+                                    <a href="#" target="_blank" class="text-gray-500 hover:text-white transition-colors"><i data-feather="external-link"></i></a>
+                                </div>
                             </div>
+                            <h3 class="text-xl font-bold mb-2 group-hover:text-variable transition-colors">Hospital Group Websites</h3>
+                            <p class="text-sm text-gray-400 mb-4">ออกแบบและพัฒนาเว็บไซต์ของโรงพยาบาล 3 แห่ง ได้แก่ รพ.กรุงเทพภูเก็ต, รพ.ดีบุก, และ รพ.กรุงเทพสิริโรจน์</p>
                         </div>
-                        <h3 class="text-xl font-bold mb-2 group-hover:text-variable transition-colors">Hospital Group Websites</h3>
-                        <p class="text-sm text-gray-400 mb-4">ออกแบบและพัฒนาเว็บไซต์ของโรงพยาบาล 3 แห่ง ได้แก่ รพ.กรุงเทพภูเก็ต, รพ.ดีบุก, และ รพ.กรุงเทพสิริโรจน์</p>
+                        <div class="bg-gray-900/50 px-6 py-3 border-t border-[#00ff41]">
+                             <p class="font-fira text-xs text-gray-500 flex flex-wrap gap-x-4 gap-y-1">
+                                 <span>WordPress</span> <span>PHP</span> <span>MySQL</span> <span>JavaScript</span>
+                             </p>
+                        </div>
                     </div>
-                    <div class="bg-gray-900/50 px-6 py-3 border-t border-gray-700">
-                         <p class="font-fira text-xs text-gray-500 flex flex-wrap gap-x-4 gap-y-1">
-                             <span>WordPress</span> <span>PHP</span> <span>MySQL</span> <span>JavaScript</span>
-                         </p>
-                    </div>
-                </div>
-                 <!-- Project Card 2 -->
-                <div class="bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex flex-col group transition-transform duration-300 hover:-translate-y-1">
-                    <div class="p-6 flex-grow">
-                        <div class="flex justify-between items-center mb-4">
-                            <i data-feather="folder" class="text-indigo-400"></i>
-                            <div class="flex space-x-3">
-                                <!-- <a href="#" target="_blank" class="text-gray-500 hover:text-white transition-colors"><i data-feather="github"></i></a> -->
-                                <a href="#" target="_blank" class="text-gray-500 hover:text-white transition-colors"><i data-feather="external-link"></i></a>
+                     <!-- Project Card 2 -->
+                    <div class="bg-gray-800/50 border border-[#00ff41] rounded-lg overflow-hidden flex flex-col group transition-transform duration-300 hover:-translate-y-1">
+                        <div class="p-6 flex-grow">
+                            <div class="flex justify-between items-center mb-4">
+                                <i data-feather="folder" class="text-pink-400"></i>
+                                <div class="flex space-x-3">
+                                    <a href="#" target="_blank" class="text-gray-500 hover:text-white transition-colors"><i data-feather="external-link"></i></a>
+                                </div>
                             </div>
+                            <h3 class="text-xl font-bold mb-2 group-hover:text-variable transition-colors">Intranet & Web Application</h3>
+                            <p class="text-sm text-gray-400 mb-4">ออกแบบและพัฒนาระบบ Intranet, Web Application เพื่อใช้งานภายในโรงพยาบาลกรุงเทพภูเก็ต</p>
                         </div>
-                        <h3 class="text-xl font-bold mb-2 group-hover:text-variable transition-colors">Intranet & Web Application</h3>
-                        <p class="text-sm text-gray-400 mb-4">ออกแบบและพัฒนาระบบ Intranet, Web Application เพื่อใช้งานภายในโรงพยาบาลกรุงเทพภูเก็ต</p>
+                        <div class="bg-gray-900/50 px-6 py-3 border-t border-[#00ff41]">
+                             <p class="font-fira text-xs text-gray-500 flex flex-wrap gap-x-4 gap-y-1">
+                                 <span>ASP.NET</span> <span>C#</span> <span>SQL Server</span> <span>React</span>
+                             </p>
+                        </div>
                     </div>
-                    <div class="bg-gray-900/50 px-6 py-3 border-t border-gray-700">
-                         <p class="font-fira text-xs text-gray-500 flex flex-wrap gap-x-4 gap-y-1">
-                             <span>ASP.NET</span> <span>C#</span> <span>SQL Server</span> <span>React</span>
-                         </p>
-                    </div>
-                </div>
-                 <!-- Project Card 3 -->
-                <div class="bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex flex-col group transition-transform duration-300 hover:-translate-y-1">
-                    <div class="p-6 flex-grow">
-                        <div class="flex justify-between items-center mb-4">
-                            <i data-feather="folder" class="text-indigo-400"></i>
-                            <div class="flex space-x-3">
-                                <!-- <a href="#" target="_blank" class="text-gray-500 hover:text-white transition-colors"><i data-feather="github"></i></a> -->
+                     <!-- Project Card 3 -->
+                    <div class="bg-gray-800/50 border border-[#00ff41] rounded-lg overflow-hidden flex flex-col group transition-transform duration-300 hover:-translate-y-1">
+                        <div class="p-6 flex-grow">
+                            <div class="flex justify-between items-center mb-4">
+                                <i data-feather="folder" class="text-pink-400"></i>
+                                <div class="flex space-x-3">
+                                </div>
                             </div>
+                            <h3 class="text-xl font-bold mb-2 group-hover:text-variable transition-colors">Airport Control System GUI</h3>
+                            <p class="text-sm text-gray-400 mb-4">ออกแบบ GUI (Graphic User Interface) สำหรับระบบ BAS และ Fire Alarm ของสนามบินสุวรรณภูมิ</p>
                         </div>
-                        <h3 class="text-xl font-bold mb-2 group-hover:text-variable transition-colors">Airport Control System GUI</h3>
-                        <p class="text-sm text-gray-400 mb-4">ออกแบบ GUI (Graphic User Interface) สำหรับระบบ BAS และ Fire Alarm ของสนามบินสุวรรณภูมิ</p>
-                    </div>
-                    <div class="bg-gray-900/50 px-6 py-3 border-t border-gray-700">
-                         <p class="font-fira text-xs text-gray-500 flex flex-wrap gap-x-4 gap-y-1">
-                             <span>C#</span> <span>WPF</span> <span>SCADA</span> <span>SQL</span>
-                         </p>
+                        <div class="bg-gray-900/50 px-6 py-3 border-t border-[#00ff41]">
+                             <p class="font-fira text-xs text-gray-500 flex flex-wrap gap-x-4 gap-y-1">
+                                 <span>C#</span> <span>WPF</span> <span>SCADA</span> <span>SQL</span>
+                             </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Contact Section -->
-        <section id="contact" class="my-20 scroll-mt-20">
-             <div class="text-center max-w-2xl mx-auto">
-                <h2 class="text-3xl font-bold mb-4 font-fira"><span class="text-comment">// 06.</span> <span class="text-variable">Get In Touch</span></h2>
-                <p class="text-gray-400 mb-8">ผมกำลังมองหาโอกาสใหม่ๆ และยินดีที่จะได้ร่วมงานกับคุณ หากคุณสนใจ สามารถติดต่อผมได้เลยครับ</p>
-                <a href="mailto:youremail@example.com" class="font-fira inline-block bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg transition-colors duration-200 text-lg">
+        <section id="contact" class="scroll-mt-16 py-20 md:py-24">
+             <div class="container mx-auto px-6 text-center max-w-2xl">
+                <h2 class="text-3xl font-bold text-center mb-12 font-fira">
+                    <span class="text-keyword">Get In Touch</span><span class="text-keyword blinking-cursor"></span>
+                </h2>
+                <p class="text-gray-400 mb-8">My inbox is always open. Whether you have a question or just want to say hello, I'll try my best to get back to you!</p>
+                <a href="mailto:thongchai.dev@gmail.com" class="font-fira inline-block text-white font-bold py-3 px-8 rounded-lg text-lg contact-btn">
                     <span class="text-keyword">const</span> <span class="text-variable">message</span> = <span class="text-string">'Nobody can stop me'</span>;
                 </a>
             </div>
         </section>
-    </div>
+    </main>
 
     <!-- Footer -->
-    <footer class="text-center py-8">
-        <div class="flex justify-center space-x-6 mb-4">
-             <a href="#" target="_blank" class="text-gray-500 hover:text-white transition-colors"><i data-feather="github" class="w-6 h-6"></i></a>
-             <a href="#" target="_blank" class="text-gray-500 hover:text-white transition-colors"><i data-feather="linkedin" class="w-6 h-6"></i></a>
-             <a href="#" target="_blank" class="text-gray-500 hover:text-white transition-colors"><i data-feather="twitter" class="w-6 h-6"></i></a>
+    <footer class="text-center py-8 bg-[#121212]">
+        <div class="container mx-auto px-6">
+            <p class="font-fira text-xs text-gray-600"><span class="text-keyword">&lt;/&gt;</span> Designed & Built by Thongchai Tantawat <span class="text-keyword">&lt;/&gt;</span></p>
         </div>
-        <p class="font-fira text-xs text-gray-600">Designed & Built by Thongchai Tandawat</p>
     </footer>
 
     <script>
@@ -402,7 +633,7 @@
             const introText = [
                 { text: "Loading profile...", colorClass: "text-comment"},
                 { text: "Welcome to my profile", colorClass: "text-white"},
-                { text: "I am Thongchai Tandawat, a Full-Stack Developer", colorClass: "text-white"},
+                { text: "I am Thongchai Tantawat, a Full-Stack Developer", colorClass: "text-white"},
                 { text: "Scroll down to learn more about me", colorClass: "text-string"},
             ];
             
@@ -442,6 +673,144 @@
 
         document.addEventListener('DOMContentLoaded', (event) => {
            type();
+
+           // Matrix Rain Effect
+            const canvas = document.getElementById('matrix-canvas');
+            const ctx = canvas.getContext('2d');
+
+            let w = canvas.width = window.innerWidth;
+            let h = canvas.height = window.innerHeight;
+            let cols = Math.floor(w / 20) + 1;
+            let ypos = Array(cols).fill(0);
+
+            ctx.fillStyle = '#0D0D0D';
+            ctx.fillRect(0, 0, w, h);
+
+            function matrix() {
+                ctx.fillStyle = 'rgba(13, 13, 13, 0.05)';
+                ctx.fillRect(0, 0, w, h);
+
+                ctx.fillStyle = '#00ff41';
+                ctx.font = '15pt monospace';
+
+                ypos.forEach((y, ind) => {
+                    const text = String.fromCharCode(Math.random() * 128);
+                    const x = ind * 20;
+                    ctx.fillText(text, x, y);
+
+                    if (y > 100 + Math.random() * 10000) {
+                        ypos[ind] = 0;
+                    } else {
+                        ypos[ind] = y + 20;
+                    }
+                });
+            }
+
+            setInterval(matrix, 33);
+            
+            window.addEventListener('resize', () => {
+                 let parentHeader = canvas.parentElement;
+                 w = canvas.width = parentHeader.clientWidth;
+                 h = canvas.height = parentHeader.clientHeight;
+                 cols = Math.floor(w / 20) + 1;
+                 ypos = Array(cols).fill(0);
+            });
+
+
+            // Scrollspy for active nav links
+            const sections = document.querySelectorAll('main section[id]');
+            const allNavLinks = document.querySelectorAll('nav a.nav-link');
+            const navContainer = document.querySelector('nav .hidden.md\\:flex');
+            const mobileNavContainer = document.getElementById('mobile-menu');
+
+            let userIsClicking = false;
+            let lastKnownActiveId = null;
+
+            const setActiveLink = (id) => {
+                allNavLinks.forEach(link => {
+                    link.classList.remove('active-link');
+                    const linkHrefId = link.getAttribute('href').substring(1);
+                    if (linkHrefId === id) {
+                        link.classList.add('active-link');
+                    }
+                });
+            };
+            
+            const handleMouseEnter = () => {
+                allNavLinks.forEach(l => l.classList.remove('active-link'));
+            };
+
+            const handleMouseLeave = () => {
+                setActiveLink(lastKnownActiveId);
+            };
+
+            allNavLinks.forEach(link => {
+                link.addEventListener('mouseenter', handleMouseEnter);
+            });
+            if (navContainer) {
+                navContainer.addEventListener('mouseleave', handleMouseLeave);
+            }
+            if (mobileNavContainer) {
+                mobileNavContainer.addEventListener('mouseleave', handleMouseLeave);
+            }
+
+
+            allNavLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    if(e.currentTarget.getAttribute('href').length <= 1) return; 
+
+                    userIsClicking = true;
+                    const clickedId = e.currentTarget.getAttribute('href').substring(1);
+                    lastKnownActiveId = clickedId;
+                    setActiveLink(clickedId);
+                    
+                    setTimeout(() => {
+                        userIsClicking = false;
+                    }, 1000);
+                });
+            });
+            
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    if (userIsClicking) return;
+
+                    let bestCandidate = null;
+                    let smallestDistance = Infinity;
+                    const triggerPoint = window.innerHeight * 0.4; // 40% from top
+
+                    sections.forEach(section => {
+                        const rect = section.getBoundingClientRect();
+                        const distance = Math.abs(rect.top - triggerPoint);
+                        
+                        // Consider a section if its top is above the bottom of the viewport
+                        // and its bottom is below the top of the viewport
+                        if (rect.top < window.innerHeight && rect.bottom >= 0) {
+                             if (distance < smallestDistance) {
+                                smallestDistance = distance;
+                                bestCandidate = section.id;
+                            }
+                        }
+                    });
+
+                    // BUG FIX: If the 'about' section's top is still below our trigger point,
+                    // it means we are in the hero section, so nothing should be active.
+                    const aboutSection = document.getElementById('about');
+                    if (aboutSection && aboutSection.getBoundingClientRect().top > triggerPoint) {
+                        bestCandidate = null;
+                    }
+
+                    lastKnownActiveId = bestCandidate;
+
+                    const isHoveringNav = navContainer && navContainer.matches(':hover');
+                    const isHoveringMobileNav = mobileNavContainer && mobileNavContainer.matches(':hover');
+
+                    if (!isHoveringNav && !isHoveringMobileNav) {
+                        setActiveLink(lastKnownActiveId);
+                    }
+                }, 100); // Debounce scroll event for performance
+            });
         });
     </script>
 </body>
