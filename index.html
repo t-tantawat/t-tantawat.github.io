@@ -671,43 +671,69 @@
         function startIntro() {
             typewriterElement.classList.remove('cursor');
             const introText = [
-                { text: "Loading profile...", colorClass: "text-comment"},
-                { text: "Welcome to my profile", colorClass: "text-white"},
+                { text: "Initializing boot sequence... ", colorClass: "text-white", status: "DONE"},
+                { text: "Connecting to server... ", colorClass: "text-white", status: "OK"},
+                { text: "Fetching user data... ", colorClass: "text-white", status: "OK"},
+                { text: "Parsing profile... ", colorClass: "text-white", status: "OK"},
+                { text: "Rendering UI... ", colorClass: "text-white", status: "DONE"},
+                { text: "" }, // Empty line for spacing
+                { text: "Welcome to my profile", colorClass: "text-string"},
                 { text: "I am Thongchai Tantawat, a Full-Stack Developer", colorClass: "text-white"},
                 { text: "Scroll down to learn more about me", colorClass: "text-string"},
             ];
             
             let lineIndex = 0;
             const terminalBody = typewriterElement.parentElement.parentElement;
-            typewriterElement.parentElement.innerHTML += `<br>`; // Add a line break after the command
-            
+            typewriterElement.parentElement.innerHTML += `<br>`;
+
             function typeLine() {
                 if (lineIndex < introText.length) {
-                    const newLine = document.createElement('p');
-                    let charIndex = 0;
                     const currentLine = introText[lineIndex];
-                    newLine.className = currentLine.colorClass;
+                    const newLine = document.createElement('p');
+                    
+                    if(currentLine.text === "") {
+                        newLine.innerHTML = '&nbsp;';
+                        terminalBody.appendChild(newLine);
+                        proceedToNextLine();
+                        return;
+                    }
+
+                    newLine.className = currentLine.colorClass || 'text-white';
                     terminalBody.appendChild(newLine);
                     
+                    let charIndex = 0;
+
                     function typeChar() {
                         if (charIndex < currentLine.text.length) {
                             newLine.textContent += currentLine.text.charAt(charIndex);
                             charIndex++;
-                            setTimeout(typeChar, 40);
+                            setTimeout(typeChar, 30);
                         } else {
-                            lineIndex++;
-                            if (lineIndex === introText.length) {
-                                // Add final prompt
-                                const finalPrompt = document.createElement('p');
-                                finalPrompt.innerHTML = `<span class="text-green-400">user@portfolio</span><span class="text-white">:</span><span class="text-blue-400">~</span>$ <span class="cursor"></span>`;
-                                terminalBody.appendChild(finalPrompt);
+                            if (currentLine.status) {
+                                setTimeout(() => {
+                                    newLine.innerHTML += `[ <span class="text-keyword">${currentLine.status}</span> ]`;
+                                    proceedToNextLine();
+                                }, 200);
+                            } else {
+                                proceedToNextLine();
                             }
-                            setTimeout(typeLine, 500);
                         }
                     }
                     typeChar();
                 }
             }
+
+            function proceedToNextLine() {
+                lineIndex++;
+                if (lineIndex < introText.length) {
+                    setTimeout(typeLine, lineIndex > 5 ? 400 : 250);
+                } else {
+                    const finalPrompt = document.createElement('p');
+                    finalPrompt.innerHTML = `<span class="text-green-400">user@portfolio</span><span class="text-white">:</span><span class="text-blue-400">~</span>$ <span class="cursor"></span>`;
+                    terminalBody.appendChild(finalPrompt);
+                }
+            }
+            
             typeLine();
         }
 
